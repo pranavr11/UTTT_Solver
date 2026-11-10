@@ -1,6 +1,6 @@
 # Towards Solving Ultimate Tic Tac Toe
 
-**URL:** https://pranavr11.github.io/UTTT_Solver/
+**URL:** <https://pranavr11.github.io/UTTT_Solver/>
 
 ## Summary
 
@@ -35,10 +35,10 @@ We hypothesize the final optimizations to be centered around:
 
 ## Resources
 
-- https://minimax.dev/docs/ultimate/
-- https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe
-- [2511.10339] Massively Parallel Proof-Number Search for Impartial Games and Beyond
-- AlphaZero-based Proof Cost Network to Aid Game Solving | OpenReview
+- <https://minimax.dev/docs/ultimate/>
+- <https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe>
+- [[2511.10339] Massively Parallel Proof-Number Search for Impartial Games and Beyond](https://arxiv.org/abs/2511.10339)
+- AlphaZero-based Proof Cost Network to Aid Game Solving (OpenReview)
 - Possible Microsoft Azure credits for startups
 - Leftover credits from previous classes / programs
 
