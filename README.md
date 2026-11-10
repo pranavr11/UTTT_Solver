@@ -19,7 +19,7 @@ Elhage's 2020 project ([minimax.dev](https://minimax.dev/docs/ultimate/)) is the
 - All workers share a concurrent transposition table (TT) with fine-grained per-entry locking.
 - Game state is bit-packed, win detection uses SIMD, and "critical square" analysis prunes parts of the tree without search.
 
-Even so, he estimated that a full solution would cost on the order of 2–10M of cloud CPU time (at the time).
+Even so, he estimated that a full solution would cost on the order of 2-10M of cloud CPU time (at the time).
 
 ## The Challenge
 
@@ -29,16 +29,16 @@ We plan to use profiling and other techniques from the class to improve the SOTA
 
 We hypothesize the final optimizations to be centered around:
 
-- **Memory usage.** The data structure the solver uses (TT) is quite large at 10 GiB, meaning that targeted optimizations to caching, NUMA awareness, and other techniques could carry significant weight.
-- **Centralized scheduling.** Similar to the anti-pattern in asst4 with having a single thread dispatch work to other threads, this will result in poor performance when scaling to higher thread counts.
-- **Pruning methodology.** Elhage argued that positional analysis can be used to prune and speculate the search pattern to effectively cut the amount of compute time to find a solution.
+- **Memory Usage:** the data structure the solver uses (TT) is quite large at 10 GiB, meaning that targeted optimizations to caching, NUMA Awareness, and other techniques could carry significant weight
+- **Centralized Scheduling:** Similar to the anti-pattern in asst4 with having a single thread dispatch work to other threads, this will result in poor performance when scaling to higher thread counts
+- **Pruning Methodology:** Elhage argued that positional analysis can be used to prune and speculate the search pattern to effectively cut the amount of compute time to find a solution.
 
 ## Resources
 
-- [Ultimate Tic-Tac-Toe (minimax.dev)](https://minimax.dev/docs/ultimate/)
-- [Ultimate tic-tac-toe (Wikipedia)](https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe)
+- https://minimax.dev/docs/ultimate/
+- https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe
 - [2511.10339] Massively Parallel Proof-Number Search for Impartial Games and Beyond
-- AlphaZero-based Proof Cost Network to Aid Game Solving (OpenReview)
+- AlphaZero-based Proof Cost Network to Aid Game Solving | OpenReview
 - Possible Microsoft Azure credits for startups
 - Leftover credits from previous classes / programs
 
@@ -47,31 +47,30 @@ We hypothesize the final optimizations to be centered around:
 ### Plan to achieve
 
 - Reproduce Nelson Elhage's existing solver performance
-  - Either from scratch, or build from the existing (reimplemented) model
+  - Either from scratch, or we can build from the existing (reimplemented model)
   - Maybe use a different parallelization paradigm or platform
-  - If we can create a CUDA version (with slightly worse performance), it may be possible to bruteforce in a more reasonable manner
-- Profile and identify bottlenecks
-- Implement at least two optimizations
-- Evaluate parallel scaling
+  - If we can modify the algorithm to conduct search through matrix multiplication, even with slightly worse theoretical performance, the optimization of hardware for this task may allow for a large speedup.
+- Profile and identify bottlenecks. Based on profiling results, investigate improvements to work scheduling, distributed worker coordination, or transposition table accesses.
+- Implement at least two optimizations identified in the previous step.
+- Evaluate parallel scaling. Benchmark performance across different core counts, machines, and topologies.
 - Quantify improvements and preserve correctness
 
 ### Hope to achieve
 
-- Speed up current SOTA techniques for solving UTTT by multiple orders of magnitude, weakly solving the game. (To weakly solve is to establish a proof of whether the first player has a winning strategy.)
-- Explore neural-network guided search
-- Develop a distributed solver
+- Explore neural-network guided search, training a specific neural network for positional analysis in order to reorder, prioritize, or prune moves. We could possibly train different neural networks for analyzing different sections of the subtree, allowing for an interesting opportunity for parallelism and communication.
+- Develop a distributed UTTT solver that splits proof search coarsely across machines, with multithreaded search within each. Workers share proven results and proof-number updates, so solved positions are not re-searched elsewhere.
+- Ultimate Goal: Speed up current SOTA techniques for solving UTTT by multiple orders of magnitude, weakly solving the game.
 
-### Concerns from the meeting
+The two main concerns raised during the meeting were:
 
-- Will we be able to do something interesting / novel? Not sure, which is why our "plan to achieve" is just to replicate / reimplement the baseline Nelson Elhage solver.
-- Will this also fall into the trap of the "parallel instances" just computing the same thing in isolation? The literature shows that cooperative proof number search is a real thing, so we have some basis to think we're good.
+- **Novelty and technical contribution:** Will we be able to make meaningful improvements beyond the existing solver? This remains uncertain, which is why our "plan to achieve" focuses on reproducing or reimplementing Nelson Elhage's baseline solver, with further optimizations as stretch goals.
+- **Meaningful parallelism:** Will our approach consist of independent solver instances with little communication or cooperation? Prior research on cooperative proof-number search demonstrates that meaningful coordination between parallel workers is possible, providing a foundation for our proposed approach.
 
 ## Platform Choice
 
-- GHC/PSC → NCSA for hella cores
-- CMU Google Cloud credits are available (I think)
-- AWS/Azure something; use friends' YC credits if possible
-- Also have Modal credits for GPU
+- **Multicore CPUs (GHC/NCSA):** Our primary platform for proof search, which benefits from CPU parallelism and large shared memory. We'll use NCSA in place of PSC.
+- **Cloud CPUs (Google Cloud, AWS, Azure):** For distributed solving, potentially using CMU Google Cloud credits, existing AWS/Azure startup credits, or leftover credits from YC Startup School.
+- **GPUs (Modal/Colab):** For neural-network-guided search, using available GPU credits.
 
 ## Schedule
 
@@ -82,5 +81,5 @@ As Pranav has 1 final exam and no other projects or exams for the rest of the se
 | 1 | Nov 9–15 | Submit proposal. Build ultimattt on GHC/PSC and confirm it runs. Select a consistent method of benchmarking and run the baselines. |
 | 2 | Nov 16–22 | Reproduce / reimplement baseline results and finalize core profiling. Begin design and setup for the neural-network-advised position analysis module and parallel transposition table optimizations. Intermediate milestone report due. |
 | 3 | Nov 23–29 | Thanksgiving week—implement two optimizations and build candidate neural model for positional evaluation. Benchmark neural evaluation batching to explore parallelism and inference throughput. |
-| 4 | Nov 30 – Dec 6 | Integrate neural move ordering into parallel DFPN search. Begin implementation of the distributed solver prototype across nodes, featuring coarse task leasing and work stealing. Complete feature freeze. |
-| 5 | Dec 7–10 | Run full scaling sweeps for the combined distributed and neural-guided solver. Finalize efficiency plots, prepare final report, and present poster for competition on Dec 10. |
+| 4 | Nov 30 – Dec 6 | Integrate neural move ordering into parallel DFPN search. Begin implementation of the distributed solver prototype across nodes. |
+| 5 | Dec 7–10 | Run full scaling sweeps for the combined distributed and neural-guided solver. Fix all last minute issues that have inevitably popped up. Finalize results and prepare poster. |
