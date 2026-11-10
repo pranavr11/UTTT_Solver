@@ -1,5 +1,35 @@
+---
+layout: null
+---
 <!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
-<meta http-equiv="refresh" content="0; url=README.md">
-<link rel="canonical" href="README.md">
-<a href="README.md">README.md</a>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Towards Solving Ultimate Tic Tac Toe</title>
+<style>
+  body {
+    font: 17px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif;
+    max-width: 46rem;
+    margin: 2rem auto 4rem;
+    padding: 0 1.25rem;
+    color: #1a1a1a;
+    background: #fff;
+  }
+  h1 { font-size: 1.8rem; line-height: 1.2; margin: 0 0 1rem; }
+  h2 { font-size: 1.25rem; margin: 2rem 0 0.5rem; }
+  h3 { font-size: 1.05rem; margin: 1.4rem 0 0.4rem; }
+  p { margin: 0.75rem 0; }
+  a { color: #0645ad; }
+  ul { margin: 0.4rem 0 0.8rem; padding-left: 1.3rem; }
+  li { margin: 0.3rem 0; }
+  table { border-collapse: collapse; width: 100%; margin: 1rem 0 0; font-size: 0.95rem; }
+  th, td { border: 1px solid #ccc; padding: 0.45rem 0.6rem; vertical-align: top; text-align: left; }
+  th { background: #f4f4f4; }
+</style>
+</head>
+<body>
+{% capture proposal %}{% include_relative README.md %}{% endcapture %}
+{{ proposal | markdownify }}
+</body>
+</html>

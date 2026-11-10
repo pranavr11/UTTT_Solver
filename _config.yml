@@ -1,0 +1,4 @@
+title: Towards Solving Ultimate Tic Tac Toe
+markdown: kramdown
+kramdown:
+  input: GFM
